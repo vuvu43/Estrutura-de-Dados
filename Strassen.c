@@ -43,8 +43,7 @@ int main(int argc, char *argv[])
     display_matriz(tam_matriz, matriz_strassen);
     
     }else{
-        int tam_matriz = atoi(argv[strlen(*argv)]);
-        printf("%d\n", tam_matriz);
+        int tam_matriz = atoi(argv[argc - 1]);
         
         int **matrizA = faz_matriz(tam_matriz);
         int **matrizB = faz_matriz(tam_matriz);
@@ -218,6 +217,18 @@ void display_matriz(int tam_matriz, int** matriz)
         puts("");
     }
 }
+
+int** faz_matriz(int tam_matriz){
+    int** matriz;
+    
+    matriz = (int **)malloc(tam_matriz * sizeof(int*));
+    for(int i = 0; i < tam_matriz; i++){ 
+        matriz[i] = (int *)malloc( tam_matriz * sizeof(int));
+    }
+    
+    return matriz;
+}
+
 
 int** faz_matriz(int tam_matriz){
     int** matriz;
