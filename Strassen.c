@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     display_matriz(tam_matriz, matrizB);
     puts("");
     display_matriz(tam_matriz, matriz_normal);
-     puts("");
+    puts("");
     display_matriz(tam_matriz, matriz_strassen);
     
     return 0;
@@ -50,15 +50,15 @@ int** multiplica_strassen(int tam_matriz, int** matrizA, int** matrizB)
     }
     
     int** A = faz_matriz(tam_matriz);
-	int** B = faz_matriz(tam_matriz);
-	int** C = faz_matriz(tam_matriz);
-	int** D = faz_matriz(tam_matriz);
-	int** E = faz_matriz(tam_matriz);
-	int** F = faz_matriz(tam_matriz);
-	int** G = faz_matriz(tam_matriz);
-	int** H = faz_matriz(tam_matriz);
+    int** B = faz_matriz(tam_matriz);
+    int** C = faz_matriz(tam_matriz);
+    int** D = faz_matriz(tam_matriz);
+    int** E = faz_matriz(tam_matriz);
+    int** F = faz_matriz(tam_matriz);
+    int** G = faz_matriz(tam_matriz);
+    int** H = faz_matriz(tam_matriz);
 	
-	for(int i=0; i<k; i++) {
+    for(int i=0; i<k; i++) {
         for(int j=0; j<k; j++) {
             A[i][j] = matrizA[i][j];
 		    B[i][j] = matrizA[i][k+j];
@@ -68,32 +68,32 @@ int** multiplica_strassen(int tam_matriz, int** matrizA, int** matrizB)
 		    F[i][j] = matrizB[i][k+j];
 		    G[i][j] = matrizB[k+i][j];
 		    H[i][j] = matrizB[k+i][k+j];
-        }
-	}
+         }
+     }
 	
-	int** P1 = multiplica_strassen(k, A, subtrai_matriz(k, F, H));
-	int** P2 = multiplica_strassen(k, soma_matriz(k, A, B), H);
-	int** P3 = multiplica_strassen(k, soma_matriz(k, C, D), E);
-	int** P4 = multiplica_strassen(k, D, subtrai_matriz(k, G, E));
-	int** P5 = multiplica_strassen(k, soma_matriz(k, A, D), soma_matriz(k, E, H));
-	int** P6 = multiplica_strassen(k, subtrai_matriz(k, B, D), soma_matriz(k, G, H));
-	int** P7 = multiplica_strassen(k, subtrai_matriz(k, A, C), soma_matriz(k, E, F));
+    int** P1 = multiplica_strassen(k, A, subtrai_matriz(k, F, H));
+    int** P2 = multiplica_strassen(k, soma_matriz(k, A, B), H);
+    int** P3 = multiplica_strassen(k, soma_matriz(k, C, D), E);
+    int** P4 = multiplica_strassen(k, D, subtrai_matriz(k, G, E));
+    int** P5 = multiplica_strassen(k, soma_matriz(k, A, D), soma_matriz(k, E, H));
+    int** P6 = multiplica_strassen(k, subtrai_matriz(k, B, D), soma_matriz(k, G, H));
+    int** P7 = multiplica_strassen(k, subtrai_matriz(k, A, C), soma_matriz(k, E, F));
 	
-	int** R = subtrai_matriz(k, soma_matriz(k, P5, P4), subtrai_matriz(k, P2, P6));
-	int** S = soma_matriz(k, P1, P2);
-	int** T = soma_matriz(k, P3, P4);
-	int** U = subtrai_matriz(k, soma_matriz(k, P5, P1), soma_matriz(k, P3, P7));
+    int** R = subtrai_matriz(k, soma_matriz(k, P5, P4), subtrai_matriz(k, P2, P6));
+    int** S = soma_matriz(k, P1, P2);
+    int** T = soma_matriz(k, P3, P4);
+    int** U = subtrai_matriz(k, soma_matriz(k, P5, P1), soma_matriz(k, P3, P7));
 	
-	for(int i=0; i<k; i++){
+    for(int i=0; i<k; i++){
         for(int j=0; j<k; j++){
             matriz_final[i][j] = R[i][j];
             matriz_final[i][j+k] = S[i][j];
             matriz_final[k+i][j] = T[i][j];
             matriz_final[k+i][k+j] = U[i][j];
-		}
-	}
+	  }
+    }
 	
-	return matriz_final;
+    return matriz_final;
 }
 
 int** subtrai_matriz(int tam_matriz, int** matrizA, int** matrizB)
