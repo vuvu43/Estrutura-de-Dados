@@ -43,8 +43,32 @@ int main(int argc, char *argv[])
     display_matriz(tam_matriz, matriz_strassen);
     
     }else{
+        int tam_matriz = atoi(argv[strlen(*argv)]);
+        printf("%d\n", tam_matriz);
         
+        int **matrizA = faz_matriz(tam_matriz);
+        int **matrizB = faz_matriz(tam_matriz);
+        fill_random(tam_matriz, matrizA, matrizB);
+        
+        double tempo1 = 0.0;
+        clock_t begin = clock();
+        int **matriz_normal = multiplica_normal(tam_matriz, matrizA, matrizB); 
+        clock_t end = clock();
+        tempo1 += (double)(end - begin) / CLOCKS_PER_SEC;
+        printf("\nTempo da multiplicação normal: %f\n", tempo1);
+        display_matriz(tam_matriz, matriz_normal);
+        
+        puts("");
+        
+        double tempo2 = 0.0;
+        clock_t inicio = clock();
+        int **matriz_strassen = multiplica_strassen(tam_matriz, matrizA, matrizB); 
+        clock_t fim = clock();
+        tempo2 += (double)(fim - inicio) / CLOCKS_PER_SEC;
+        printf("\nTempo da multiplicação normal: %f\n", tempo1);
+        display_matriz(tam_matriz, matriz_strassen);
     }
+    
     return 0;
 }
 
@@ -205,4 +229,3 @@ int** faz_matriz(int tam_matriz){
     
     return matriz;
 }
-
