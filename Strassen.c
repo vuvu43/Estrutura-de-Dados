@@ -32,8 +32,6 @@ int main(int argc, char *argv[])
     printf("\nTempo da multiplicação normal: %f\n", tempo1);
     display_matriz(tam_matriz, matriz_normal);
     
-    puts("");
-    
     double tempo2 = 0.0;
     clock_t inicio = clock();
     int **matriz_strassen = multiplica_strassen(tam_matriz, matrizA, matrizB); 
@@ -56,8 +54,6 @@ int main(int argc, char *argv[])
         tempo1 += (double)(end - begin) / CLOCKS_PER_SEC;
         printf("\nTempo da multiplicação normal: %f\n", tempo1);
         display_matriz(tam_matriz, matriz_normal);
-        
-        puts("");
         
         double tempo2 = 0.0;
         clock_t inicio = clock();
