@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <string.h>
 
 int** faz_matriz(int tam_matriz);
 int** multiplica_normal(int tam_matriz, int** matrizA, int** matrizB);
@@ -9,6 +8,7 @@ int** multiplica_strassen(int tam_matriz, int** matrizA, int** matrizB);
 int** soma_matriz(int tam_matriz, int** matrizA, int**matrizB);;
 int** subtrai_matriz(int tam_matriz, int** matrizA, int**matrizB);
 
+void free_matriz(int tam_matriz, int** matriz);
 void display_matriz(int tam_matriz, int** matriz);
 void fill_random(int tam_matriz, int** matrizA, int** matrizB);
 void fill_input(int tam_matriz, int** matrizA, int** matrizB);
@@ -16,29 +16,29 @@ void fill_input(int tam_matriz, int** matrizA, int** matrizB);
 int main(int argc, char *argv[])
 {
     if(argc < 2){
-    int tam_matriz;
-    printf("Tamanho: ");
-    scanf("%d", &tam_matriz);
+        int tam_matriz;
+        printf("Tamanho: ");
+        scanf("%d", &tam_matriz);
 
-    int **matrizA = faz_matriz(tam_matriz);
-    int **matrizB = faz_matriz(tam_matriz);
-    fill_random(tam_matriz, matrizA, matrizB);
+        int **matrizA = faz_matriz(tam_matriz);
+        int **matrizB = faz_matriz(tam_matriz);
+        fill_random(tam_matriz, matrizA, matrizB);
     
-    double tempo1 = 0.0;
-    clock_t begin = clock();
-    int **matriz_normal = multiplica_normal(tam_matriz, matrizA, matrizB); 
-    clock_t end = clock();
-    tempo1 += (double)(end - begin) / CLOCKS_PER_SEC;
-    printf("\nTempo da multiplicação normal: %f\n", tempo1);
-    display_matriz(tam_matriz, matriz_normal);
+        double tempo1 = 0.0;
+        clock_t begin = clock();
+        int **matriz_normal = multiplica_normal(tam_matriz, matrizA, matrizB); 
+        clock_t end = clock();
+        tempo1 += (double)(end - begin) / CLOCKS_PER_SEC;
+        printf("\nTempo da multiplicação normal: %f\n", tempo1);
+        //display_matriz(tam_matriz, matriz_normal);
     
-    double tempo2 = 0.0;
-    clock_t inicio = clock();
-    int **matriz_strassen = multiplica_strassen(tam_matriz, matrizA, matrizB); 
-    clock_t fim = clock();
-    tempo2 += (double)(fim - inicio) / CLOCKS_PER_SEC;
-    printf("\nTempo da multiplicação normal: %f\n", tempo1);
-    display_matriz(tam_matriz, matriz_strassen);
+        double tempo2 = 0.0;
+        clock_t inicio = clock();
+        int **matriz_strassen = multiplica_strassen(tam_matriz, matrizA, matrizB); 
+        clock_t fim = clock();
+        tempo2 += (double)(fim - inicio) / CLOCKS_PER_SEC;
+        printf("\nTempo da multiplicação normal: %f\n", tempo1);
+        //display_matriz(tam_matriz, matriz_strassen);
     
     }else{
         int tam_matriz = atoi(argv[argc - 1]);
@@ -60,13 +60,18 @@ int main(int argc, char *argv[])
         int **matriz_strassen = multiplica_strassen(tam_matriz, matrizA, matrizB); 
         clock_t fim = clock();
         tempo2 += (double)(fim - inicio) / CLOCKS_PER_SEC;
-        printf("\nTempo da multiplicação normal: %f\n", tempo1);
+        printf("\nTempo da multiplicação Strassen: %f\n", tempo1);
         display_matriz(tam_matriz, matriz_strassen);
     }
     
     return 0;
 }
 
+void free_matriz(int tam_matriz, int** ptr){
+    for(int i = 0; i < tam_matriz; i++){free(ptr[i]);}
+    
+    free(ptr);
+}
 
 int** multiplica_strassen(int tam_matriz, int** matrizA, int** matrizB)
 {
@@ -121,6 +126,51 @@ int** multiplica_strassen(int tam_matriz, int** matrizA, int** matrizB)
             matriz_final[k+i][k+j] = U[i][j];
 	  }
     }
+	
+	for(int i=9; i<k; i++){
+	    free(A[i]);
+	    free(B[i]);
+	    free(C[i]);
+	    free(D[i]);
+	    free(E[i]);
+	    free(F[i]);
+	    free(G[i]);
+	    free(H[i]);
+	    
+	    free(P1[i]);
+	    free(P2[i]);
+	    free(P3[i]);
+	    free(P4[i]);
+	    free(P5[i]);
+	    free(P6[i]);
+	    free(P7[i]);
+	    
+	    free(R[i]);
+	    free(S[i]);
+	    free(T[i]);
+	    free(U[i]);
+	}
+	free(A);
+	free(B);
+	free(C);
+	free(D);
+    free(E);
+    free(F);
+	free(G);
+    free(H);
+	    
+	free(P1);
+	free(P2);
+	free(P3);
+	free(P4);
+	free(P5);
+	free(P6);
+	free(P7);
+	    
+	free(R);
+	free(S);
+	free(T);
+	free(U);
 	
     return matriz_final;
 }
@@ -191,14 +241,14 @@ void fill_random(int tam_matriz, int** matrizA, int** matrizB)
     
     for(int i=0; i<tam_matriz; i++){
         for(int j=0; j<tam_matriz; j++ ){
-            int r = rand()%100 + 1;
+            int r = rand()%2 + 1;
             matrizA[i][j] = r;
         }
     }
     
     for(int i=0; i<tam_matriz; i++){
         for(int j=0; j<tam_matriz; j++ ){
-            int r = rand()%100 + 1;
+            int r = rand()%2 + 1;
             matrizB[i][j] = r;
         }
     }
@@ -224,15 +274,4 @@ int** faz_matriz(int tam_matriz){
     
     return matriz;
 }
-
-
-int** faz_matriz(int tam_matriz){
-    int** matriz;
     
-    matriz = (int **)malloc(tam_matriz * sizeof(int*));
-    for(int i = 0; i < tam_matriz; i++){ 
-        matriz[i] = (int *)malloc( tam_matriz * sizeof(int));
-    }
-    
-    return matriz;
-}
