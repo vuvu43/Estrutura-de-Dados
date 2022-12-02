@@ -82,13 +82,9 @@ void insereNo(int novo_num) {
         } else {
 
             if (dir[track - 1] == 0) {
-            ypt = pilha[track - 1];
+                ypt = pilha[track - 1];
             } else {
-            xpt = pilha[track - 1];
-            ypt = xpt->dir;
-            xpt->dir = ypt->esq;
-            ypt->esq = xpt;
-            pilha[track - 2]->esq = ypt;////////////////////
+                pilha[track - 2]->esq = rotesq(pilha[track - 1]);
             }
 
             xpt = pilha[track - 2];
@@ -118,13 +114,9 @@ void insereNo(int novo_num) {
         } else {
 
             if (dir[track - 1] == 1) {
-            ypt = pilha[track - 1];
+                ypt = pilha[track - 1];
             } else {
-            xpt = pilha[track - 1];
-            ypt = xpt->esq;
-            xpt->esq = ypt->dir;
-            ypt->dir = xpt;
-            pilha[track - 2]->dir = ypt;/////////////////
+                pilha[track - 2]->dir = rotdir(pilha[track - 1]);
             }
 
             xpt = pilha[track - 2];
