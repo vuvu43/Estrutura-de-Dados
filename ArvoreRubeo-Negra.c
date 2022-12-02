@@ -74,67 +74,68 @@ void insereNo(int novo_num) {
 
     while ((track >= 3) && (pilha[track - 1]->cor == *"R")) {
         if (dir[track - 2] == 0) {
-        ypt = pilha[track - 2]->dir;
-        if (ypt != NULL && ypt->cor == *"R") {
-            pilha[track - 2]->cor = *"R";
-            pilha[track - 1]->cor = ypt->cor = *"N";
-            track -= 2;
+            ypt = pilha[track - 2]->dir;
+
+            if (ypt != NULL && ypt->cor == *"R") {
+                pilha[track - 2]->cor = *"R";
+                pilha[track - 1]->cor = ypt->cor = *"N";
+                track -= 2;
+
+            } else {
+                
+                if (dir[track - 1] == 0) {
+                    ypt = pilha[track - 1];
+                }else {
+                    pilha[track - 2]->esq = rotesq(pilha[track - 1]);
+                }
+
+                xpt = pilha[track - 2];
+                xpt->cor = *"R";
+                ypt->cor = *"N";
+                xpt->esq = ypt->dir;
+                ypt->dir = xpt;
+
+                if (xpt == ptraiz) {
+                    ptraiz = ypt;
+                }else {
+                    if(dir[track - 3] == 0){pilha[track - 3]->esq = ypt;}
+                    else{pilha[track - 3]->dir = ypt;}
+                }
+
+                break;
+            }
         } else {
 
-            if (dir[track - 1] == 0) {
-                ypt = pilha[track - 1];
-            } else {
-                pilha[track - 2]->esq = rotesq(pilha[track - 1]);
+            ypt = pilha[track - 2]->esq;
+
+            if (ypt && (ypt->cor == *"R")) {
+                pilha[track - 2]->cor = *"R";
+                pilha[track - 1]->cor = ypt->cor = *"N";
+                track -= 2;
+
+            }else {
+
+                if (dir[track - 1] == 1) {
+                    ypt = pilha[track - 1];
+                } else {
+                    pilha[track - 2]->dir = rotdir(pilha[track - 1]);
+                }
+
+                xpt = pilha[track - 2];
+                ypt->cor = *"N";
+                xpt->cor = *"R";
+                xpt->dir = ypt->esq;
+                ypt->esq = xpt;
+
+                if (xpt == ptraiz) {
+                    ptraiz = ypt;
+                }else {
+                    if(dir[track - 3] == 0){pilha[track - 3]->esq = ypt;}
+                    else{pilha[track - 3]->dir = ypt;}
+                }
+
+                break;
             }
-
-            xpt = pilha[track - 2];
-            xpt->cor = *"R";
-            ypt->cor = *"N";
-            xpt->esq = ypt->dir;
-            ypt->dir = xpt;////////////////
-
-            if (xpt == ptraiz) {
-                ptraiz = ypt;
-            } else {
-                if(dir[track - 3] == 0){pilha[track - 3]->esq = ypt;}
-                else{pilha[track - 3]->dir = ypt;}
-            }
-
-            break;
-        }
-        } else {
-
-        ypt = pilha[track - 2]->esq;
-
-        if ((ypt != NULL) && (ypt->cor == *"R")) {
-            pilha[track - 2]->cor = *"R";
-            pilha[track - 1]->cor = ypt->cor = *"N";
-            track -= 2;
-
-        } else {
-
-            if (dir[track - 1] == 1) {
-                ypt = pilha[track - 1];
-            } else {
-                pilha[track - 2]->dir = rotdir(pilha[track - 1]);
-            }
-
-            xpt = pilha[track - 2];
-            ypt->cor = *"N";
-            xpt->cor = *"R";
-            xpt->dir = ypt->esq;
-            ypt->esq = xpt;//////////////////
-
-            if (xpt == ptraiz) {
-            ptraiz = ypt;
-            } else {
-                if(dir[track - 3] == 0){pilha[track - 3]->esq = ypt;}
-                else{pilha[track - 3]->dir = ypt;}
-            }
-
-            break;
-        }
-
         }
     }
 }
